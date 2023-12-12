@@ -3,9 +3,11 @@
 # 1. Use the below weather end-point to get the current weather details of Hyderabad
 # http://api.openweathermap.org/data/2.5/weather?q=hyderabad&appid={your_key}
 import requests
+from dotenv import dotenv_values
 
-appid = "34dfefaf2e6d419b14344678bb42d8db"
-
+env_dict = dotenv_values(".env")
+appid = env_dict["API_KEY"]
+print(appid)
 url = "http://api.openweathermap.org/data/2.5/weather"
 
 params = {"q": "hyderabad", "appid": appid}
