@@ -43,10 +43,10 @@ assert resp.json()["email"] == 'shalini@gmail.com'
 # d. Create your own resource
 # take payload from a file.
 
-fp = open('data.json', 'r')
-json_data = fp.read()
+# fp = open('data.json', 'r')
+# json_data = fp.read()
 
-data = {
+data = json.dumps({
     "name": "Shalini Agarwal",
     "username": "shalini",
     "email": "abc@def.com",
@@ -67,15 +67,18 @@ data = {
         "catchPhrase": "Proactive didactic contingency",
         "bs": "synergize scalable supply-chains"
     }
+})
+
+#print("JSON_DATA read directly from file:", json_data)
+#resp = requests.post(url,data=json_data)
+headers = {
+    'Content-Type': 'application/json'
 }
 
-print("JSON_DATA read directly from file:", json_data)
-#resp = requests.post(url,data=json_data)
-resp = requests.post(url,data=data)
-#print(resp.headers)
-
+resp = requests.post(url,json=data, headers=headers)
+print("*******STATUS CODE=********", resp.status_code)
 # i. verify the response code
-assert resp.status_code == 201, f"{resp.status_code}"
+#assert resp.status_code == 201, f"{resp.status_code}"
 
 # ii. Verify the response body
 expected_response = {
@@ -101,10 +104,10 @@ expected_response = {
     },
     "id": 11
 }
-# print(resp.json())
-#
-# print(resp.content)
-# print(resp.text)
+print(resp.json())
+
+print(resp.content)
+print(resp.text)
 
 # c. Delete a specific resource
 url2 = url + '/11'

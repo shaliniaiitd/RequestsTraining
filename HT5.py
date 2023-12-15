@@ -37,24 +37,30 @@ json_data = json.dumps(payload)
 url = base_url + "api/v1/create"
 url = "http://dummy.restapiexample.com/api/v1/create"
 print(url)
-resp = requests.post(url,json=json_data)
-print(resp.status_code) #Gives 406, though works fine on postman
-#
+
+headers = {'User-Agent': 'request'}
+
+resp = requests.post(url,data=payload, headers=headers)
+print(resp.status_code)
+
+#Was giving 406, though worked fine on postman
+# Problem got resolved by using above headers
 # # This endpoint doesn't seem to be working.
-#
-# expected_response = {
-#     "status": "success",
-#     "data": {
-#         "name": "Shalini",
-#         "salary": "45678",
-#         "age": "43",
-#         "id": 25
-#     }
-# }
+
 # # a. verify that employee is created successfully.
-# print(resp.status_code)
-# assert resp.json() == expected_response
+print(resp.json())
+assert resp.json()['data']['name'] == 'Shalini'
 # b. verify the count of employees is increased by +1
+
+base_url = "http://dummy.restapiexample.com/"
+
+# 1. Get the list of all employees.
+endpoint = 'api/v1/employees'
+
+url = base_url + endpoint
+
+resp = requests.get(url)
+print( len(resp.json()['data'])) #Gives 24 instead of 25
 
 #Cannot be done, since employee couldnot be created
 
@@ -63,7 +69,12 @@ print(resp.status_code) #Gives 406, though works fine on postman
 
 # a. verify all the details given in step2
 
-#Cannot be done
+url  = 	'https://dummy.restapiexample.com/api/v1/employee/4473'
+
+resp = requests.get(url, headers = {'user-agent': 'request'})
+
+print(resp.status_code)
+print(resp.text)
 
 # 4. update the details of the employee update the salary and age
 # Try updating employee with id = 24
@@ -80,8 +91,8 @@ print(resp.status_code) #Gives 406, though works fine on postman
 # a. verify the updated details in step 4.
 # 6. delete the employee created in step 2.
 # Try deleting employee with id 24
-resp = requests.delete("http://dummy.restapiexample.com/api/v1/delete/24")
-print(resp.status_code) #Returns 406, though works fine on postman
+# resp = requests.delete("http://dummy.restapiexample.com/api/v1/delete/24")
+# print(resp.status_code) #Returns 406, though works fine on postman
 # a. verify the delete is successful.
 # b. verify the total list of employees is decreased by -1
 #
